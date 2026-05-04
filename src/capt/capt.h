@@ -20,24 +20,24 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-#define LINE_SIZE		592	
-//#define PIXELS_BY_ROW  	(LINE_SIZE*8)	
-//#define LINES_BY_PAGE	6760 //6774
-#define LINES_BY_PAGE	6968
-#define ROWS_BY_BAND  	104 // number of rows in a band
-//#define LINES_BY_PAGE	862
-//#define ROWS_BY_BAND  	13 // number of rows in a band
+#define LINE_SIZE       592
+#define LINES_BY_PAGE   6968
+#define ROWS_BY_BAND    104
 
-#define MAX_PACKET_COUNT 3072 // Maximum number of packet in a transfer
-//#define MAX_PACKET_COUNT 12000 // Maximum number of packet in a transfer
+#define MAX_PACKET_COUNT 3072
+#define PAGE_DELAY       3000000  /* usec between pages */
 
-#define PAGE_DELAY 3000000 //Delay between pages, in usec
+#define CUPS_ERROR(fmt, ...)   fprintf(stderr, "ERROR: "   fmt "\n", ##__VA_ARGS__)
+#define CUPS_WARN(fmt, ...)    fprintf(stderr, "WARNING: " fmt "\n", ##__VA_ARGS__)
+#define CUPS_INFO(fmt, ...)    fprintf(stderr, "INFO: "    fmt "\n", ##__VA_ARGS__)
+#define CUPS_DEBUG(fmt, ...)   fprintf(stderr, "DEBUG: "   fmt "\n", ##__VA_ARGS__)
 
 #ifdef DEBUG
-#define INLINE 
+#  define INLINE
+#  define DPRINTF(fmt, ...)    fprintf(stderr, "DEBUG: " fmt "\n", ##__VA_ARGS__)
 #else
-#define INLINE inline
+#  define INLINE   inline
+#  define DPRINTF(fmt, ...)    do {} while(0)
 #endif
 
 /* end of file */
-
