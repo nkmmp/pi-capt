@@ -22,7 +22,7 @@ sudo apt install build-essential cups libcups2-dev libcupsimage2-dev ghostscript
 ### Build
 
 ```bash
-git clone https://github.com/Limych/pi-capt.git
+git clone https://github.com/nkmmp/pi-capt.git
 cd pi-capt/src/capt
 make
 sudo make install
