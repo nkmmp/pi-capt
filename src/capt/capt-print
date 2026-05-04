@@ -1,5 +1,44 @@
 #!/bin/sh
-/usr/bin/gs -q -dNOPAUSE -r600x600 -sPAPERSIZE=a4 -sDEVICE=pbmraw \
-	-sOutputFile=\|"/usr/bin/capt $1 $2 $3 $4 $5 $6 $7 $8 $9" - 
-#2> /tmp/capt.log 
+#
+# capt-print — CUPS filter for Canon LBP810 / LBP1120
+# Usage: capt-print job-id user title copies options [file]
+#
 
+log_info()  { echo "INFO: $*"  >&2; }
+log_error() { echo "ERROR: $*" >&2; }
+log_debug() { echo "DEBUG: $*" >&2; }
+
+DEVICE="${CAPT_DEVICE:-/dev/usb/lp0}"
+
+if [ $# -lt 5 ]; then
+    log_error "Usage: capt-print job-id user title copies options [file]"
+    exit 1
+fi
+
+JOB_ID="$1"
+USER="$2"
+TITLE="$3"
+COPIES="$4"
+OPTIONS="$5"
+FILE="${6:-}"
+
+log_info "Job $JOB_ID: '$TITLE' by $USER ($COPIES copies)"
+log_debug "Device: $DEVICE, Options: $OPTIONS"
+
+if [ -n "$FILE" ] && [ -f "$FILE" ]; then
+    INPUT="$FILE"
+    GS_INPUT="$FILE"
+else
+    INPUT="-"
+    GS_INPUT="-"
+fi
+
+exec /usr/bin/gs \
+    -q \
+    -dNOPAUSE \
+    -dBATCH \
+    -r600x600 \
+    -sPAPERSIZE=a4 \
+    -sDEVICE=pbmraw \
+    -sOutputFile="|/usr/bin/capt -d ${DEVICE}" \
+    "$GS_INPUT"
